@@ -12,6 +12,7 @@ export const Tabs = () => {
     <Tab.Navigator
       sceneContainerStyle={{backgroundColor: 'white'}}
       screenOptions={{
+        headerShown: false, //oculta titulo default
         tabBarActiveTintColor: '#5856d6',
         tabBarLabelStyle: {
           marginBottom: Platform.OS === 'ios' ? 0 : 10,
