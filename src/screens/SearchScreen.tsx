@@ -14,6 +14,7 @@ import {globalStyles} from '../theme/appTheme';
 import {PokemonCard} from '../components/PokemonCard';
 import {Loading} from '../components/Loading';
 import {SimplePokemon} from '../interfaces/pokemonInterfaces';
+import {PokemonNotFound} from '../components/PokemonNotFound';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -48,7 +49,7 @@ export const SearchScreen = () => {
   if (isFetching) {
     return <Loading />;
   }
-
+  console.log(pokemonFiltered.length);
   return (
     <View style={styles.container}>
       <SearchInput
@@ -60,24 +61,28 @@ export const SearchScreen = () => {
         }}
       />
 
-      <FlatList
-        data={pokemonFiltered}
-        keyExtractor={pokemon => pokemon.id}
-        showsVerticalScrollIndicator={false}
-        numColumns={2}
-        ListHeaderComponent={
-          <Text
-            style={{
-              ...globalStyles.title,
-              ...globalStyles.globalMargin,
-              ...styles.title,
-              marginTop: Platform.OS === 'ios' ? top + 60 : top + 80,
-            }}>
-            {term}
-          </Text>
-        }
-        renderItem={({item}) => <PokemonCard pokemon={item} />}
-      />
+      {term && pokemonFiltered.length === 0 ? (
+        <PokemonNotFound />
+      ) : (
+        <FlatList
+          data={pokemonFiltered}
+          keyExtractor={pokemon => pokemon.id}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          ListHeaderComponent={
+            <Text
+              style={{
+                ...globalStyles.title,
+                ...globalStyles.globalMargin,
+                ...styles.title,
+                marginTop: Platform.OS === 'ios' ? top + 60 : top + 80,
+              }}>
+              {term}
+            </Text>
+          }
+          renderItem={({item}) => <PokemonCard pokemon={item} />}
+        />
+      )}
     </View>
   );
 };
