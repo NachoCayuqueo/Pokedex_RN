@@ -29,11 +29,20 @@ export const SearchScreen = () => {
       return setPokemonFiltered([]);
     }
 
-    setPokemonFiltered(
-      simplePokemonList.filter(pokemon =>
-        pokemon.name.toLocaleLowerCase().includes(term.toLocaleLowerCase()),
-      ),
-    );
+    //* If it is not a number, search by name.
+    if (isNaN(Number(term))) {
+      setPokemonFiltered(
+        simplePokemonList.filter(pokemon =>
+          pokemon.name.toLocaleLowerCase().includes(term.toLocaleLowerCase()),
+        ),
+      );
+    } else {
+      //* If it is not a number, search by ID.
+      const pokemonById = simplePokemonList.find(
+        pokemon => pokemon.id === term,
+      );
+      setPokemonFiltered(pokemonById ? [pokemonById] : []);
+    }
   }, [term]);
 
   if (isFetching) {
