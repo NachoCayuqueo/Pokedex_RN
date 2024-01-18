@@ -10,6 +10,7 @@ interface Props {
 export const PokemonDetails = ({pokemon}: Props) => {
   return (
     <ScrollView
+      keyboardShouldPersistTaps="never"
       showsVerticalScrollIndicator={false}
       style={{
         ...StyleSheet.absoluteFillObject,
@@ -33,29 +34,39 @@ export const PokemonDetails = ({pokemon}: Props) => {
       </View>
 
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <FadeInImage
-          uri={pokemon.sprites.front_default}
-          style={styles.basicSprite}
-        />
-        <FadeInImage
-          uri={pokemon.sprites.back_default}
-          style={styles.basicSprite}
-        />
-        <FadeInImage
-          uri={pokemon.sprites.front_shiny}
-          style={styles.basicSprite}
-        />
-        <FadeInImage
-          uri={pokemon.sprites.back_shiny}
-          style={styles.basicSprite}
-        />
+        {pokemon.sprites.front_default && (
+          <FadeInImage
+            uri={pokemon.sprites.front_default}
+            style={styles.basicSprite}
+          />
+        )}
+
+        {pokemon.sprites.back_default && (
+          <FadeInImage
+            uri={pokemon.sprites.back_default}
+            style={styles.basicSprite}
+          />
+        )}
+
+        {pokemon.sprites.front_shiny && (
+          <FadeInImage
+            uri={pokemon.sprites.front_shiny}
+            style={styles.basicSprite}
+          />
+        )}
+        {pokemon.sprites.back_shiny && (
+          <FadeInImage
+            uri={pokemon.sprites.back_shiny}
+            style={styles.basicSprite}
+          />
+        )}
       </ScrollView>
 
       <View style={styles.container}>
         <Text style={styles.title}>Habilidades Base</Text>
         <View style={styles.containerTypes}>
-          {pokemon.abilities.map(({ability}) => (
-            <Text key={ability.name} style={styles.regularText}>
+          {pokemon.abilities.map(({ability}, index) => (
+            <Text key={ability.name + index} style={styles.regularText}>
               {ability.name}
             </Text>
           ))}
@@ -64,7 +75,7 @@ export const PokemonDetails = ({pokemon}: Props) => {
 
       <View style={styles.container}>
         <Text style={styles.title}>Movimientos</Text>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        <View style={styles.moves}>
           {pokemon.moves.map(({move}) => (
             <Text key={move.name} style={styles.regularText}>
               {move.name}
@@ -77,7 +88,7 @@ export const PokemonDetails = ({pokemon}: Props) => {
         <Text style={styles.title}>Stats</Text>
         <View>
           {pokemon.stats.map((stat, index) => (
-            <View key={stat.stat.name + index} style={{flexDirection: 'row'}}>
+            <View key={stat.stat.name + index} style={styles.stats}>
               <Text
                 key={stat.stat.name}
                 style={{...styles.regularText, width: 150}}>
@@ -91,7 +102,7 @@ export const PokemonDetails = ({pokemon}: Props) => {
           ))}
         </View>
 
-        <View style={{marginBottom: 20, alignItems: 'center'}}>
+        <View style={styles.footerImage}>
           <FadeInImage
             uri={pokemon.sprites.front_default}
             style={styles.basicSprite}
@@ -109,6 +120,13 @@ const styles = StyleSheet.create({
   containerTypes: {
     flexDirection: 'row',
   },
+  moves: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  stats: {
+    flexDirection: 'row',
+  },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
@@ -121,5 +139,9 @@ const styles = StyleSheet.create({
   basicSprite: {
     width: 100,
     height: 100,
+  },
+  footerImage: {
+    marginBottom: 55,
+    alignItems: 'center',
   },
 });
